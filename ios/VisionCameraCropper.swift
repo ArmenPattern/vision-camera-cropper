@@ -1,9 +1,9 @@
 @objc(VisionCameraCropper)
-class VisionCameraCropper: NSObject {
+class VisionCameraCropper: FrameProcessorPlugin {
 
   @objc(rotateImage:degree:withResolver:withRejecter:)
   func rotateImage(base64: String, degree: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
-      
+
       guard let image = VisionCameraCropper.convertBase64ToImage(base64) else {
           reject("error","Invalid base64",nil);
           return;
@@ -13,7 +13,7 @@ class VisionCameraCropper: NSObject {
       print("rotated image width %d", rotated.size.width)
       resolve(VisionCameraCropper.getBase64FromImage(rotated))
   }
-    
+
     public static func rotate(image: UIImage, degree: CGFloat) -> UIImage {
         let radians = degree / (180.0 / .pi)
         let rotatedSize = CGRect(origin: .zero, size: image.size)
@@ -34,7 +34,7 @@ class VisionCameraCropper: NSObject {
         }
         return image
     }
-    
+
     public static func getBase64FromImage(_ image:UIImage) -> String {
       let dataTmp = image.jpegData(compressionQuality: 100)
       if let data = dataTmp {
@@ -42,7 +42,7 @@ class VisionCameraCropper: NSObject {
       }
       return ""
     }
-    
+
     public static func convertBase64ToImage(_ imageStr:String) ->UIImage?{
         if let data: NSData = NSData(base64Encoded: imageStr, options:NSData.Base64DecodingOptions.ignoreUnknownCharacters)
         {
